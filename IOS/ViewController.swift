@@ -20,33 +20,47 @@ class ViewController: UIViewController
     @IBOutlet weak var LoginMessage: UILabel!
     
     @IBOutlet weak var RememberMe: UISwitch!
-    
+    var user:String?
+    var pass:String?
     override func viewDidLoad() {
         super.viewDidLoad()
        
     }
 
     @IBAction func LOGIBsumbit(_ sender: UIButton) {
-        InvalidUsernameOrEmail.text = ""
-        InvalidPassword.text = ""
-        LoginMessage.text = ""
-        if UserNameOrEmail.text == "amrit@.com"
-        {
-            if Password.text == "Amrit"
+       loginplist()
+    }
+    func loginplist()
+    {
+        if let bundlePath = Bundle.main.path(forResource: "loginplist", ofType: "plist") {
+            let dictionary = NSMutableDictionary(contentsOfFile: bundlePath)
+            
+            let loginplist = dictionary!["users"] as! NSArray
+            for e in loginplist
             {
-                LoginMessage.text = "Login Successful"
+                let emp = e as! NSDictionary
+                self.user=emp["username"] as? String
+                self.pass=(emp["password"] as! String)
+                
+                if(user == UserNameOrEmail.text && pass == Password.text)
+                {
+                    print("login sucess")
+                    print("username::\(self.UserNameOrEmail!)")
+                    print("password::\(self.Password!)")
+                }
+                else
+                {
+                    print("login fail")
+                    print("username::\(self.UserNameOrEmail!)")
+                    print("password::\(self.Password!)")
+                    print("----------------")
+                    print(UserNameOrEmail.text! )
+                    print(Password.text!)
+                }
             }
-            else
-            {
-                InvalidPassword.text = "Invalid Password"
-            }
-        }
-        else
-        {
-            InvalidUsernameOrEmail.text = "Invalid UserNameOrEmail"
-        }
-        
+
     }
     
 }
 
+}
